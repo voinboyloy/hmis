@@ -1,0 +1,39 @@
+@config './tailwind.config.js';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* This is your custom theme file. 
+  You can override Filament's default CSS variables here.
+*/
+
+:root {
+    --sidebar-bg-color: #1f2937;
+    /* A dark slate gray */
+    --main-content-bg-color: #f9fafb;
+    /* A very light gray */
+}
+
+
+/* Apply the custom color to the sidebar */
+
+.fi-sidebar {
+    background-color: var(--sidebar-bg-color) !important;
+}
+
+
+/* Ensure the main content area has its own background color */
+
+.fi-main {
+    background-color: var(--main-content-bg-color) !important;
+}
+
+
+/* You can also customize colors for dark mode */
+
+.dark {
+    --sidebar-bg-color: #0f172a;
+    /* A darker slate for dark mode */
+    --main-content-bg-color: #111827;
+    /* Dark gray for main content */
+}
