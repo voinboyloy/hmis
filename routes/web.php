@@ -42,4 +42,8 @@ Route::get('/dashboard', function () {
 
 
 // This loads all the login, registration, and password reset routes
+Route::get('/invoices/{record}/print', [App\Http\Controllers\PrintController::class, 'printInvoice'])
+    ->name('filament.admin.resources.invoices.print')
+    ->middleware(['auth']);
+
 require __DIR__.'/auth.php';

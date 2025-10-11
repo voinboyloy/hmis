@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EncounterResource\Pages;
 use App\Filament\Resources\EncounterResource\RelationManagers;
 use App\Models\Encounter;
+use App\Models\IcdCode;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,7 +28,10 @@ class EncounterResource extends Resource
                     ->schema([
                         Forms\Components\KeyValue::make('vitals')->keyLabel('Vital Sign')->valueLabel('Value')->reorderable(),
                         Forms\Components\RichEditor::make('notes')->required()->columnSpanFull(),
-                        Forms\Components\TextInput::make('diagnosis')->maxLength(255),
+                        Forms\Components\Select::make('icd_code_id')
+                            ->label('ICD-10 Diagnosis')
+                            ->options(IcdCode::all()->pluck('description', 'id'))
+                            ->searchable(),
                     ]),
             ]);
     }
@@ -38,7 +42,8 @@ class EncounterResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('patient.first_name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('appointment.schedule')->label('Appointment Time')->dateTime()->sortable(),
-                Tables\Columns\TextColumn::make('diagnosis')->searchable(),
+                Tables\Columns\TextColumn::make('icdCode.code')->label('ICD Code')->searchable(),
+                Tables\Columns\TextColumn::make('icdCode.description')->label('Diagnosis')->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
             ])
             ->actions([Tables\Actions\EditAction::make(), Tables\Actions\ViewAction::make()])

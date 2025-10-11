@@ -11,9 +11,11 @@ use Illuminate\Support\Carbon;
 
 class StatsOverview extends BaseWidget
 {
+    protected int | string | array $columnSpan = 'full';
     protected function getStats(): array
     {
         // Get the start and end dates from the dashboard filter
+        
         $startDate = $this->filters['startDate'] ?? now()->startOfMonth();
         $endDate = $this->filters['endDate'] ?? now()->endOfMonth();
 

@@ -11,8 +11,10 @@
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "league/csv": "^9.26",
         "livewire/flux": "^2.1.1",
         "livewire/volt": "^1.7.0",
+        "pxlrbt/filament-excel": "^2.5",
         "saade/filament-fullcalendar": "^3.2",
         "spatie/laravel-permission": "^6.21"
     },

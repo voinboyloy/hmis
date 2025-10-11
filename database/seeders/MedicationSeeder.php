@@ -9,8 +9,6 @@ class MedicationSeeder extends Seeder
 {
     public function run(): void
     {
-        Medication::truncate();
-
         $medications = [
             ['name' => 'Paracetamol 500mg', 'brand' => 'Generic', 'price' => 5.00],
             ['name' => 'Amoxicillin 250mg', 'brand' => 'Generic', 'price' => 12.50],

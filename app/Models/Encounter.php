@@ -17,13 +17,14 @@ class Encounter extends Model
         'appointment_id',
         'vitals',
         'notes',
-        'diagnosis',
+        'icd_code_id',
     ];
 
     protected function casts(): array
     {
         return [
             'vitals' => 'array',
+            'icd_code_id' => 'integer',
         ];
     }
 
@@ -35,6 +36,11 @@ class Encounter extends Model
     public function appointment(): BelongsTo
     {
         return $this->belongsTo(Appointment::class);
+    }
+
+    public function icdCode(): BelongsTo
+    {
+        return $this->belongsTo(IcdCode::class);
     }
 
     public function prescriptions(): HasMany

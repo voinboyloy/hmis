@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Appointment;
+use App\Models\IcdCode;
 use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class EncounterFactory extends Factory
                 'heart_rate' => fake()->numberBetween(60, 100),
             ],
             'notes' => fake()->paragraph(),
-            'diagnosis' => fake()->sentence(3),
+            'icd_code_id' => IcdCode::inRandomOrder()->first()->id,
         ];
     }
 }
