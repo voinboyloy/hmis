@@ -9,6 +9,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/portal', function () {
+    return view('portal');
+})->name('portal');
+
 // --- Patient Portal Routes (Authenticated) ---
 Route::get('/dashboard', function () {
     /** @var \App\Models\User $user */
