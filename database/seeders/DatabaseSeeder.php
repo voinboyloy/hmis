@@ -12,6 +12,7 @@ use App\Models\Prescription;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
@@ -21,13 +22,34 @@ class DatabaseSeeder extends Seeder
         // 1. Disable foreign key checks to allow truncating tables
         Schema::disableForeignKeyConstraints();
 
-        // 2. Call all the seeders that create your base data first
+        // 2. Truncate all tables
+        DB::table('prescriptions')->truncate();
+        DB::table('lab_orders')->truncate();
+        DB::table('invoices')->truncate();
+        DB::table('encounters')->truncate();
+        DB::table('appointments')->truncate();
+        DB::table('staff_profiles')->truncate();
+        DB::table('invoice_items')->truncate();
+        DB::table('stock_batches')->truncate();
+        DB::table('medications')->truncate();
+        DB::table('services')->truncate();
+        DB::table('lab_tests')->truncate();
+        DB::table('patients')->truncate();
+        DB::table('users')->truncate();
+        DB::table('roles')->truncate();
+        DB::table('permissions')->truncate();
+        DB::table('role_has_permissions')->truncate();
+        DB::table('model_has_roles')->truncate();
+        DB::table('icd_codes')->truncate();
+
+        // 3. Call all the seeders that create your base data first
         $this->call([
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
             LabTestSeeder::class,
             ServiceSeeder::class,
             MedicationSeeder::class,
+            IcdCodeSeeder::class,
         ]);
         $staffUsers = User::whereNull('patient_id')->get();
 
@@ -46,18 +68,19 @@ class DatabaseSeeder extends Seeder
         'department' => $department,
     ]);
 }
-        // 3. Get the records you just created to use in relationships
+        // 4. Get the records you just created to use in relationships
         $doctor = User::where('email', 'doctor@hmis.test')->first();
         $consultation = Service::where('name', 'Doctor Consultation')->first();
         $medication = Medication::first();
 
-        // 4. Now, create Patients and their full history
+        // 5. Now, create Patients and their full history
         Patient::factory(50)->create()->each(function (Patient $patient) use ($doctor, $consultation, $medication) {
 
             // Create 1 to 5 appointments for the patient
             $appointments = Appointment::factory(rand(1, 5))->create([
                 'patient_id' => $patient->id,
                 'user_id' => $doctor->id,
+                'service_id' => $consultation->id,
             ]);
 
             // For the most recent appointment, create an encounter
@@ -94,7 +117,8 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        // 5. Re-enable foreign key checks
+        // 6. Re-enable foreign key checks
         Schema::enableForeignKeyConstraints();
     }
 }
+

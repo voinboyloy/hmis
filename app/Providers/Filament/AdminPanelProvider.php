@@ -46,30 +46,30 @@ class AdminPanelProvider extends PanelProvider
 
                     /* Sidebar Background */
                     .fi-sidebar {
-                        background-color: #1f2937 !important; /* Dark Slate */
+                        background-color: #0f172a !important; /* Dark Slate */
                     }
 
                     /* Sidebar Text (Navigation Links & Group Headers) */
                     .fi-sidebar .fi-sidebar-item-label,
                     .fi-sidebar .fi-sidebar-group-label {
-                        color: #d1d5db !important; /* Light Gray */
+                        color: #ffffff
                     }
 
                     /* Sidebar Active/Hover Text */
                     .fi-sidebar-item-active .fi-sidebar-item-label,
                     .fi-sidebar-item a:hover .fi-sidebar-item-label,
                     .fi-sidebar-item button:hover .fi-sidebar-item-label {
-                        color: #1f2937  !important;
+                        color: #295491ff  !important;
                     }
 
-                    /* Sidebar Brand/Logo Text */
+                    /* Sidebar Brand/Logos Text */
                     .fi-sidebar .fi-brand {
-                        color: #93c5fd !important; /* Light Blue */
+                        color: #fffff !important; /* Light Blue */
                     }
 
                     /* Main Content Background */
                     .fi-main {
-                        background-color: #f9fafb !important; /* Very Light Gray */
+                        background-color: #fffff  !important; /* Very Light Gray */
                     }
 
                     /* ------------------ DARK MODE ------------------ */
@@ -78,7 +78,13 @@ class AdminPanelProvider extends PanelProvider
                     .dark .fi-sidebar {
                         background-color: #0f172a !important; /* Darker Slate */
                     }
-
+                    .dark .fi-sidebar .fi-sidebar-item-label,
+                    .fi-sidebar .fi-sidebar-group-label {
+                        color: #fffff  !important; /* Light Gray */
+                    }
+                    .dark fi-sidebar-item-active .fi-sidebar-item-label,{
+                        color: #ffffff  !important; /* Light Blue */
+                    }
                     /* Main Content Background */
                     .dark .fi-main {
                         background-color: #111827 !important; /* Dark Gray */

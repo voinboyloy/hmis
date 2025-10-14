@@ -9,6 +9,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/portal', function () {
+    return view('portal');
+})->name('portal');
+
 // --- Patient Portal Routes (Authenticated) ---
 Route::get('/dashboard', function () {
     /** @var \App\Models\User $user */
@@ -42,4 +50,8 @@ Route::get('/dashboard', function () {
 
 
 // This loads all the login, registration, and password reset routes
+Route::get('/invoices/{record}/print', [App\Http\Controllers\PrintController::class, 'printInvoice'])
+    ->name('filament.admin.resources.invoices.print')
+    ->middleware(['auth']);
+
 require __DIR__.'/auth.php';

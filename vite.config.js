@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import path from 'path'; // Import the path module
 
 export default defineConfig({
     plugins: [
@@ -8,4 +9,11 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    // Add path resolution alias for the '@' symbol
+    resolve: {
+        alias: {
+            // This aliases the '@' symbol to the 'resources/js' directory
+            '@': path.resolve(__dirname, 'resources/js'),
+        },
+    },
 });

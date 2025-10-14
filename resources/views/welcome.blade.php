@@ -46,6 +46,12 @@
                             Dashboard
                         </a>
                     @else
+                        <a href="{{ route('about') }}" class="rounded-md px-3 py-2 text-gray-700 dark:text-gray-300 ring-1 ring-transparent transition hover:text-black/70 dark:hover:text-white/80 focus:outline-none focus-visible:ring-amber-500">
+                            About Us
+                        </a>
+                        <a href="{{ route('portal') }}" class="rounded-md px-3 py-2 text-gray-700 dark:text-gray-300 ring-1 ring-transparent transition hover:text-black/70 dark:hover:text-white/80 focus:outline-none focus-visible:ring-amber-500">
+                            Patient Portal
+                        </a>
                         <a href="{{ route('login') }}" class="rounded-md px-3 py-2 text-gray-700 dark:text-gray-300 ring-1 ring-transparent transition hover:text-black/70 dark:hover:text-white/80 focus:outline-none focus-visible:ring-amber-500">
                             Log in
                         </a>

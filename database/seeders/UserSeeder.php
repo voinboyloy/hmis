@@ -4,8 +4,10 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Patient; // <-- New import for Patient model
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon; // Import Carbon for date handling
+use Illuminate\Support\Facades\Schema;
 
 class UserSeeder extends Seeder
 {

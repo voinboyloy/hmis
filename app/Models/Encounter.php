@@ -4,26 +4,37 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Encounter extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = [
         'patient_id',
         'appointment_id',
         'vitals',
         'notes',
-        'diagnosis',
+        'icd_code_id',
     ];
+
+    protected static bool $logFillable = true;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable();
+    }
 
     protected function casts(): array
     {
         return [
             'vitals' => 'array',
+            'icd_code_id' => 'integer',
         ];
     }
 
@@ -35,6 +46,11 @@ class Encounter extends Model
     public function appointment(): BelongsTo
     {
         return $this->belongsTo(Appointment::class);
+    }
+
+    public function icdCode(): BelongsTo
+    {
+        return $this->belongsTo(IcdCode::class);
     }
 
     public function prescriptions(): HasMany
