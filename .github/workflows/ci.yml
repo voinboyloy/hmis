@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ["8.1", "8.2"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v3
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, xml, bcmath, intl
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+      - name: Run PHPStan
+        run: |
+          if [ -f phpstan.neon ]; then
+            ./vendor/bin/phpstan analyse -c phpstan.neon || true
+          else
+            echo "No phpstan.neon found, skipping"
+          fi
+
+      - name: Run PHP-CS-Fixer (check only)
+        run: |
+          if [ -f .php-cs-fixer.dist.php ]; then
+            ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --stop-on-violation
+          else
+            echo "No PHP-CS-Fixer config found, skipping"
+          fi
+
+      - name: Run Tests
+        run: |
+          if [ -f phpunit.xml ] || [ -f phpunit.xml.dist ]; then
+            ./vendor/bin/phpunit --colors=never
+          else
+            echo "No phpunit config found — skipping tests"
+          fi

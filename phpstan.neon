@@ -1,0 +1,15 @@
+includes:
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+  level: 5
+  paths:
+    - app
+    - src
+    - tests
+  autoload_files:
+    - vendor/autoload.php
+  excludes_analyse:
+    - storage
+    - bootstrap/cache
+  inferPrivatePropertyTypeFromConstructor: true
