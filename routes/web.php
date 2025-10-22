@@ -55,3 +55,6 @@ Route::get('/invoices/{record}/print', [App\Http\Controllers\PrintController::cl
     ->middleware(['auth']);
 
 require __DIR__.'/auth.php';
+
+// Patient Portal Routes
+require __DIR__.'/web_portal.php';
