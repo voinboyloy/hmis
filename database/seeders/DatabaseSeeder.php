@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
             LabTestSeeder::class,
             ServiceSeeder::class,
             MedicationSeeder::class,
-            IcdCodeSeeder::class,
+//            IcdCodeSeeder::class,
         ]);
         $staffUsers = User::whereNull('patient_id')->get();
 

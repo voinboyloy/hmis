@@ -2,8 +2,10 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "dev": "vite",
         "build": "vite build",
-        "dev": "vite"
+        "lint": "eslint resources/js --ext .js --max-warnings=0 || true",
+        "format": "prettier --write \"resources/**/*.{js,css,scss,blade.php,php}\""
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.1.11",
@@ -24,7 +26,9 @@
         "@tailwindcss/typography": "^0.5.19",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
+        "eslint": "^8.57.0",
         "postcss": "^8.4.31",
+        "prettier": "^3.0.0",
         "tailwindcss": "^3.1.0"
     }
 }

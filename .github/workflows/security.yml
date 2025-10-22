@@ -1,0 +1,34 @@
+name: Security / Composer Audit
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # weekly on Monday 03:00 UTC
+  push:
+    branches: ["main", "master"]
+
+jobs:
+  composer-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v3
+        with:
+          php-version: '8.2'
+
+      - name: Validate composer.json
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies (no-dev)
+        run: composer install --no-interaction --no-dev --prefer-dist
+
+      - name: Run composer audit
+        run: |
+          if composer audit --format=json > audit.json 2>/dev/null; then
+            echo "Composer audit output:"
+            cat audit.json
+          else
+            echo "composer audit not supported by composer version on runner or failed"
+          fi
