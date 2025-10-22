@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'hmis' => [
+        'api_url' => env('HMIS_API_URL'),
+        'api_token' => env('HMIS_API_TOKEN'),
+    ],
+
 ];

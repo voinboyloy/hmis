@@ -1,0 +1,49 @@
+:root{
+  --bg:#f7fafc;
+  --card:#ffffff;
+  --accent:#ef4444; /* red */
+  --muted:#6b7280;
+  --wrap:1100px;
+  --radius:12px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#0b1220;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:28px}
+
+/* Header */
+.site-header{background:#fff;border-bottom:1px solid rgba(11,17,32,0.04);position:sticky;top:0;z-index:20}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-weight:800;font-size:20px;text-decoration:none;color:#111}
+.brand .accent{color:var(--accent)}
+.main-nav a{margin-left:18px;text-decoration:none;color:var(--muted)}
+.btn-primary{background:var(--accent);color:#fff;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:700;display:inline-block}
+.btn-ghost{border:1px solid rgba(11,17,32,0.06);padding:10px 14px;border-radius:10px;color:var(--accent);display:inline-block}
+
+/* Hero */
+.hero-landing{background:#fff;padding:48px 0;border-bottom:8px solid rgba(239,68,68,0.08)}
+.hero-inner{display:flex;gap:32px;align-items:center}
+.hero-text h1{font-size:36px;margin:0 0 12px}
+.hero-text .lead{color:var(--muted);max-width:700px}
+.hero-ctas a{margin-right:14px}
+
+/* Grid / Cards */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:var(--card);padding:20px;border-radius:var(--radius);box-shadow:0 8px 24px rgba(16,24,40,0.06)}
+.muted{color:var(--muted)}
+
+/* Auth */
+.auth-wrap{display:flex;justify-content:center;padding:48px}
+.auth-card{max-width:420px}
+
+/* Utilities */
+.link{color:var(--accent);text-decoration:none;font-weight:600}
+.visual-box{width:320px;height:200px;background:#e9f4ff;border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700}
+
+/* Responsive */
+@media (max-width:900px){
+  .hero-inner{flex-direction:column}
+  .header-inner{padding:12px}
+}
