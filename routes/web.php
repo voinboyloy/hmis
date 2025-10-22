@@ -1,60 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Appointment;
+use App\Http\Controllers\PatientPortalController;
 
-// --- Public Routes ---
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [PatientPortalController::class, 'landing'])->name('home');
+
+Route::prefix('portal')->group(function(){
+    Route::get('/login', [PatientPortalController::class, 'showLogin'])->name('portal.login');
+    Route::post('/login', [PatientPortalController::class, 'postLogin'])->name('portal.login.post');
+    Route::get('/dashboard', [PatientPortalController::class, 'dashboard'])->name('portal.dashboard');
+    Route::get('/home', [PatientPortalController::class, 'home'])->name('portal.home');
+    Route::post('/logout', [PatientPortalController::class, 'logout'])->name('portal.logout');
+    // placeholder for booking route
+    Route::get('/book', fn()=> redirect()->route('portal.login'))->name('portal.book');
 });
-
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
-Route::get('/portal', function () {
-    return view('portal');
-})->name('portal');
-
-// --- Patient Portal Routes (Authenticated) ---
-Route::get('/dashboard', function () {
-    /** @var \App\Models\User $user */
-    $user = Auth::user();
-
-    // Check if the user is a patient. If not, redirect to the admin panel.
-    if (is_null($user->patient_id)) {
-        return redirect('/admin');
-    }
-
-    // Find the patient profile linked to this user
-    $patient = $user->patient;
-
-    // If the patient profile doesn't exist, abort.
-    if (is_null($patient)) {
-        abort(404, 'Patient profile not found.');
-    }
-
-    // Find the patient's next upcoming appointment
-    $nextAppointment = Appointment::where('patient_id', $patient->id)
-        ->where('schedule', '>=', now())
-        ->orderBy('schedule', 'asc')
-        ->first();
-
-    // Return the dashboard view with the patient and appointment data
-    return view('dashboard', [
-        'patient' => $patient,
-        'nextAppointment' => $nextAppointment,
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-// This loads all the login, registration, and password reset routes
-Route::get('/invoices/{record}/print', [App\Http\Controllers\PrintController::class, 'printInvoice'])
-    ->name('filament.admin.resources.invoices.print')
-    ->middleware(['auth']);
-
-require __DIR__.'/auth.php';
-
-// Patient Portal Routes
-require __DIR__.'/web_portal.php';
