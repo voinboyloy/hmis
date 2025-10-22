@@ -19,7 +19,7 @@ class EncounterFactory extends Factory
                 'heart_rate' => fake()->numberBetween(60, 100),
             ],
             'notes' => fake()->paragraph(),
-            'icd_code_id' => IcdCode::inRandomOrder()->first()->id,
+            'icd_code_id' => IcdCode::inRandomOrder()->first()?->id,
         ];
     }
 }
