@@ -3,171 +3,68 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Client\RequestException;
 
 class HMISApiService
 {
-    protected string $baseUrl;
-    protected ?string $token;
+    protected $base;
+    protected $token;
 
     public function __construct()
     {
-        $this->baseUrl = rtrim(config('services.hmis.api_url', env('HMIS_API_URL', '')), '/');
-        $this->token = config('services.hmis.api_token', env('HMIS_API_TOKEN', null));
+        $this->base = rtrim(config('services.hmis.url', env('HMIS_API_URL', 'http://localhost:5000/api/v1')), '/');
+        $this->token = config('services.hmis.token', env('HMIS_API_TOKEN', ''));
     }
 
-    /**
-     * Authenticate a patient and get a token
-     *
-     * @param string $username
-     * @param string $password
-     * @return array|null
-     */
-    public function authenticatePatient(string $username, string $password): ?array
+    protected function client()
+    {
+        $client = Http::acceptJson();
+        if (!empty($this->token)) {
+            $client = $client->withToken($this->token);
+        }
+        return $client->baseUrl($this->base);
+    }
+
+    public function loginPatient(array $credentials)
     {
         try {
-            $response = Http::timeout(30)
-                ->post("{$this->baseUrl}/auth/login", [
-                    'username' => $username,
-                    'password' => $password,
-                ]);
-
-            if ($response->successful()) {
-                return $response->json();
-            }
-
-            Log::warning('Patient authentication failed', [
-                'username' => $username,
-                'status' => $response->status(),
-            ]);
-
-            return null;
-        } catch (\Exception $e) {
-            Log::error('Error authenticating patient', [
-                'username' => $username,
-                'error' => $e->getMessage(),
-            ]);
-
+            $res = $this->client()->post('/auth/login', $credentials);
+            return $res->successful() ? $res->json() : null;
+        } catch (RequestException $e) {
+            report($e);
             return null;
         }
     }
 
-    /**
-     * Get patient data by patient ID
-     *
-     * @param string $patientId
-     * @param string|null $token
-     * @return array|null
-     */
-    public function getPatientData(string $patientId, ?string $token = null): ?array
+    public function getPatient($patientId)
     {
         try {
-            $token = $token ?? $this->token;
-
-            $request = Http::timeout(30);
-
-            if ($token) {
-                $request = $request->withToken($token);
-            }
-
-            $response = $request->get("{$this->baseUrl}/patients/{$patientId}");
-
-            if ($response->successful()) {
-                return $response->json();
-            }
-
-            Log::warning('Failed to get patient data', [
-                'patient_id' => $patientId,
-                'status' => $response->status(),
-            ]);
-
-            return null;
-        } catch (\Exception $e) {
-            Log::error('Error getting patient data', [
-                'patient_id' => $patientId,
-                'error' => $e->getMessage(),
-            ]);
-
+            $res = $this->client()->get("/patients/{$patientId}");
+            return $res->successful() ? $res->json() : null;
+        } catch (RequestException $e) {
+            report($e);
             return null;
         }
     }
 
-    /**
-     * Get patient appointments
-     *
-     * @param string $patientId
-     * @param string|null $token
-     * @return array
-     */
-    public function getPatientAppointments(string $patientId, ?string $token = null): array
+    public function getEncounters($patientId)
     {
         try {
-            $token = $token ?? $this->token;
-
-            $request = Http::timeout(30);
-
-            if ($token) {
-                $request = $request->withToken($token);
-            }
-
-            $response = $request->get("{$this->baseUrl}/patients/{$patientId}/appointments");
-
-            if ($response->successful()) {
-                return $response->json() ?? [];
-            }
-
-            Log::warning('Failed to get patient appointments', [
-                'patient_id' => $patientId,
-                'status' => $response->status(),
-            ]);
-
-            return [];
-        } catch (\Exception $e) {
-            Log::error('Error getting patient appointments', [
-                'patient_id' => $patientId,
-                'error' => $e->getMessage(),
-            ]);
-
+            $res = $this->client()->get("/patients/{$patientId}/encounters");
+            return $res->successful() ? $res->json() : [];
+        } catch (RequestException $e) {
+            report($e);
             return [];
         }
     }
 
-    /**
-     * Get patient medical records
-     *
-     * @param string $patientId
-     * @param string|null $token
-     * @return array
-     */
-    public function getPatientMedicalRecords(string $patientId, ?string $token = null): array
+    public function getAppointments($patientId)
     {
         try {
-            $token = $token ?? $this->token;
-
-            $request = Http::timeout(30);
-
-            if ($token) {
-                $request = $request->withToken($token);
-            }
-
-            $response = $request->get("{$this->baseUrl}/patients/{$patientId}/medical-records");
-
-            if ($response->successful()) {
-                return $response->json() ?? [];
-            }
-
-            Log::warning('Failed to get patient medical records', [
-                'patient_id' => $patientId,
-                'status' => $response->status(),
-            ]);
-
-            return [];
-        } catch (\Exception $e) {
-            Log::error('Error getting patient medical records', [
-                'patient_id' => $patientId,
-                'error' => $e->getMessage(),
-            ]);
-
+            $res = $this->client()->get("/patients/{$patientId}/appointments");
+            return $res->successful() ? $res->json() : [];
+        } catch (RequestException $e) {
+            report($e);
             return [];
         }
     }
