@@ -1,4 +1,11 @@
 <x-guest-layout>
+    <div class="mb-4 text-sm text-gray-600">
+        {{ __('Please enter your email address and choose a new password below.') }}
+    </div>
+
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
+
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
